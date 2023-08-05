@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>URL Grouping</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.container {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  max-width: 600px;
+}
+
+label, textarea, input {
+  display: block;
+  margin-bottom: 10px;
+}
+
+button {
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+#result {
+  margin-top: 20px;
+}
+
+.group {
+  margin-bottom: 20px;
+}
+
+.copy-button {
+  margin-top: 10px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>URL Grouping</h1>
+  <label for="urlList">Enter URLs (one per line):</label>
+  <textarea id="urlList" rows="4"></textarea>
+  <label for="numGroups">Number of Groups:</label>
+  <input type="number" id="numGroups" min="1" value="1">
+  <button id="groupButton">Group URLs</button>
+  <div id="result"></div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const groupButton = document.getElementById('groupButton');
+  groupButton.addEventListener('click', () => {
+    const urlList = document.getElementById('urlList').value;
+    const numGroups = parseInt(document.getElementById('numGroups').value);
+
+    const urls = urlList.split('\n').map(url => url.trim());
+    const groupedUrls = groupUrls(urls, numGroups);
+
+    displayResult(groupedUrls);
+  });
+});
+
+function groupUrls(urls, numGroups) {
+  const groups = Array.from({ length: numGroups }, () => []);
+  let currentIndex = 0;
+
+  for (const url of urls) {
+    groups[currentIndex].push(url);
+    currentIndex = (currentIndex + 1) % numGroups;
+  }
+
+  return groups;
+}
+
+function displayResult(groupedUrls) {
+  const resultContainer = document.getElementById('result');
+  resultContainer.innerHTML = '';
+
+  groupedUrls.forEach((group, index) => {
+    const groupDiv = document.createElement('div');
+    groupDiv.className = 'group';
+    groupDiv.innerHTML = `<h3>Group ${index + 1}</h3><ul>${group.map(url => `<li>${url}</li>`).join('')}</ul>`;
+    
+    const copyButton = document.createElement('button');
+    copyButton.className = 'copy-button';
+    copyButton.textContent = 'Copy to Clipboard';
+    copyButton.addEventListener('click', () => {
+      copyToClipboard(group.join('\n'));
+    });
+    
+    groupDiv.appendChild(copyButton);
+    resultContainer.appendChild(groupDiv);
+  });
+}
+
+function copyToClipboard(text) {
+  const tempElement = document.createElement('textarea');
+  tempElement.value = text;
+  document.body.appendChild(tempElement);
+  tempElement.select();
+  document.execCommand('copy');
+  document.body.removeChild(tempElement);
+}
+</script>
+</body>
+</html>
