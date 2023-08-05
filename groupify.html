@@ -3,124 +3,169 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Groupify</title>
+<title>Groupify - Organize Your Data</title>
 <style>
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background-color: #f5f5f5;
-}
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f5f5f5;
+  }
 
-.container {
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  width: 80%;
-  max-width: 600px;
-}
+  .container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 600px;
+  }
 
-label, textarea, input {
-  display: block;
-  margin-bottom: 10px;
-}
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
 
-button {
-  padding: 10px 15px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
+  label, textarea, input {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+  }
 
-button:hover {
-  background-color: #0056b3;
-}
+  button {
+    width: 100%;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
 
-#result {
-  margin-top: 20px;
-}
+  button:hover {
+    background-color: #0056b3;
+  }
 
-.group {
-  margin-bottom: 20px;
-}
+  #result {
+    margin-top: 20px;
+  }
 
-.copy-button {
-  margin-top: 10px;
-}
+  .group {
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 4px;
+  }
+
+  .copy-button {
+    display: block;
+    width: 100%;
+    padding: 8px 0;
+    background-color: #555;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .copy-button:hover {
+    background-color: #333;
+  }
 </style>
 </head>
 <body>
 <div class="container">
-  <h1>URL Grouping</h1>
-  <label for="urlList">Enter URLs (one per line):</label>
-  <textarea id="urlList" rows="4"></textarea>
+  <h1>Groupify - Organize Your Data</h1>
+  <label for="dataList">Enter Data (one per line):</label>
+  <textarea id="dataList" rows="4"></textarea>
   <label for="numGroups">Number of Groups:</label>
   <input type="number" id="numGroups" min="1" value="1">
-  <button id="groupButton">Group</button>
+  <button id="groupButton">Group Data</button>
   <div id="result"></div>
 </div>
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const groupButton = document.getElementById('groupButton');
-  groupButton.addEventListener('click', () => {
-    const urlList = document.getElementById('urlList').value;
-    const numGroups = parseInt(document.getElementById('numGroups').value);
+  document.addEventListener('DOMContentLoaded', () => {
+    const groupButton = document.getElementById('groupButton');
+    groupButton.addEventListener('click', () => {
+      const dataList = document.getElementById('dataList').value;
+      const numGroups = parseInt(document.getElementById('numGroups').value);
 
-    const urls = urlList.split('\n').map(url => url.trim());
-    const groupedUrls = groupUrls(urls, numGroups);
+      const data = dataList.split('\n').map(item => item.trim());
+      const groupedData = groupData(data, numGroups);
 
-    displayResult(groupedUrls);
+      displayResult(groupedData);
+    });
   });
-});
 
-function groupUrls(urls, numGroups) {
-  const groups = Array.from({ length: numGroups }, () => []);
-  let currentIndex = 0;
+  function groupData(data, numGroups) {
+    const groups = Array.from({ length: numGroups }, () => []);
+    let currentIndex = 0;
 
-  for (const url of urls) {
-    groups[currentIndex].push(url);
-    currentIndex = (currentIndex + 1) % numGroups;
+    for (const item of data) {
+      groups[currentIndex].push(item);
+      currentIndex = (currentIndex + 1) % numGroups;
+    }
+
+    return groups;
   }
 
-  return groups;
-}
+  function displayResult(groupedData) {
+    const resultContainer = document.getElementById('result');
+    resultContainer.innerHTML = '';
 
-function displayResult(groupedUrls) {
-  const resultContainer = document.getElementById('result');
-  resultContainer.innerHTML = '';
+    groupedData.forEach((group, index) => {
+      const groupDiv = document.createElement('div');
+      groupDiv.className = 'group';
+      groupDiv.innerHTML = `<h3>Group ${index + 1}</h3><ul>${group.map(item => `<li>${item}</li>`).join('')}</ul>`;
 
-  groupedUrls.forEach((group, index) => {
-    const groupDiv = document.createElement('div');
-    groupDiv.className = 'group';
-    groupDiv.innerHTML = `<h3>Group ${index + 1}</h3><ul>${group.map(url => `<li>${url}</li>`).join('')}</ul>`;
-    
-    const copyButton = document.createElement('button');
-    copyButton.className = 'copy-button';
-    copyButton.textContent = 'Copy to Clipboard';
-    copyButton.addEventListener('click', () => {
-      copyToClipboard(group.join('\n'));
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.textContent = 'Copy to Clipboard';
+      copyButton.addEventListener('click', () => {
+        copyToClipboard(group.join('\n'));
+      });
+
+      groupDiv.appendChild(copyButton);
+      resultContainer.appendChild(groupDiv);
     });
-    
-    groupDiv.appendChild(copyButton);
-    resultContainer.appendChild(groupDiv);
-  });
-}
+  }
 
-function copyToClipboard(text) {
-  const tempElement = document.createElement('textarea');
-  tempElement.value = text;
-  document.body.appendChild(tempElement);
-  tempElement.select();
-  document.execCommand('copy');
-  document.body.removeChild(tempElement);
+  function copyToClipboard(text) {
+    const tempElement = document.createElement('textarea');
+    tempElement.value = text;
+    document.body.appendChild(tempElement);
+    tempElement.select();
+    document.execCommand('copy');
+    document.body.removeChild(tempElement);
+  }
+</script>
+<style>
+.dark-mode {
+  background-color: #1e1e1e;
+}
+</style>
+</head>
+<body>
+<button id="button2" class="top-right-button" onclick="myFunction()">Night</button>
+<script>
+function myFunction() {
+   var element = document.body;
+   element.classList.toggle("dark-mode");
 }
 </script>
+<style>
+#button2.top-right-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 100px;
+    height: 34px;
+}
+</style>
 </body>
 </html>
