@@ -8,7 +8,7 @@
 </head>
 <body>
     <h3>Try out our new clipboard plugin</h3>
-    <p>Copy <strong>reddit</strong>, paste it on the editor and see what happens!</p>
+    <p>Copy <strong>testing</strong>, paste it on the editor and see what happens!</p>
     <script>
         document.oncopy = event => {
             event.preventDefault();
