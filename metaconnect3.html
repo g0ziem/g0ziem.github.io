@@ -22,7 +22,7 @@ async function simulateTransaction() {
       // Create a transaction object
       const transaction = {
         to: recipientAddress,
-        value: window.ethereum.utils.toWei(amountToSend, 'ether'), // Convert ETH to Wei
+        value: window.web3.utils.toWei(amountToSend, 'ether'), // Convert ETH to Wei
       };
 
       // Send the transaction
