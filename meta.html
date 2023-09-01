@@ -1,4 +1,34 @@
+
 <html>
-  <head></head>
-<iframe src="https://gcrypto.media/jem2.html"></iframe>
+<head>
+    <style>
+        html {
+            font-family: sans-serif;
+        }
+        h1 {
+            font-size: 1.8em;
+            margin-bottom: 0;
+        }
+        p {
+            margin: 5px 0;
+        }
+        #testFrame {
+            width: 95vw;
+            height: 350px;
+        }
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<h1>Android Chromium WebView XSS via window.open()</h1>
+
+<p>Parent page on <span id="originOutput"></span></p>
+
+<iframe id="testFrame" src="https://gcrypto.media/jem2.html"></iframe>
+
+<script>
+    document.getElementById('originOutput').innerText = window.location.origin;
+</script>
+
+</body>
 </html>
