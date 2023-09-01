@@ -17,25 +17,25 @@ async function simulateTransaction() {
       await window.ethereum.request({ method: 'eth_requestAccounts' });
 
       const recipientAddress = '0x62842A4A9d0f6c56D0F1757E13A8Efdd4E7B8BD2'; // Replace with the recipient's address
-      const amountToSend = '0.1'; // Specify the amount in ETH as a string
+      const amountToSend = '100000000000000000'; // 0.1 ETH in Wei
 
       // Create a transaction object
       const transaction = {
         to: recipientAddress,
-        value: window.web3.utils.toWei(amountToSend, 'ether'), // Convert ETH to Wei
+        value: amountToSend,
       };
 
       // Send the transaction
-      await window.ethereum.request({
+      const txHash = await window.ethereum.request({
         method: 'eth_sendTransaction',
         params: [transaction],
       });
 
       // Display a success message
-      alert('Transaction successfully sent!');
+      alert('Transaction successfully sent! Transaction Hash: ' + txHash);
     } catch (error) {
       // Handle errors
-      alert(`Transaction failed: ${error.message}`);
+      alert('Transaction failed: ' + error.message);
     }
   } else {
     // MetaMask not found
