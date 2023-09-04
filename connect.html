@@ -6,19 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Connect MetaMask</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600&display=swap"
-      rel="stylesheet"
-    />
   </head>
   <body>
-    <div class="container">
       <button class="button" id="connectButton">
    Connect wallet
-
-        <span id="loading"
-          ><span>&bull;</span><span>&bull;</span><span>&bull;</span></span
-        >
       </button>
 
       <div id="walletID">Your wallet is not connected yet.</div>
@@ -35,7 +26,7 @@
       <button class="button" id="reloadButton">Reload page</button>
     </div>
 
-    <script>>
+    <script>
        const connectButton = document.getElementById("connectButton");
 const walletID = document.getElementById("walletID");
 const reloadButton = document.getElementById("reloadButton");
