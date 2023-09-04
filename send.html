@@ -5,39 +5,46 @@
     <button class="sendEthButton btn">Send ETH</button>
 
     <script>
-const ethereumButton = document.querySelector('.enableEthereumButton');
-const sendEthButton = document.querySelector('.sendEthButton');
+      const ethereumButton = document.querySelector('.enableEthereumButton');
+      const sendEthButton = document.querySelector('.sendEthButton');
 
-let accounts = [];
+      let accounts = [];
 
-// Send Ethereum to an address
-sendEthButton.addEventListener('click', () => {
-  ethereum
-    .request({
-      method: 'eth_sendTransaction',
-      // The following sends an EIP-1559 transaction. Legacy transactions are also supported.
-      params: [
-        {
-          from: accounts[0], // The user's active address.
-          to: 0x62842A4A9d0f6c56D0F1757E13A8Efdd4E7B8BD2, // Required except during contract publications.
-          value: 0x2386F26FC10000, // Only required to send ether to the recipient from the initiating external account.
-          gasLimit: '0x5028', // Customizable by the user during MetaMask confirmation.
-          maxPriorityFeePerGas: '0x3b9aca00', // Customizable by the user during MetaMask confirmation.
-          maxFeePerGas: '0x2540be400', // Customizable by the user during MetaMask confirmation.
-        },
-      ],
-    })
-    .then((txHash) => console.log(txHash))
-    .catch((error) => console.error(error));
-});
+      // Check if MetaMask is installed
+      if (typeof ethereum !== 'undefined') {
+        ethereumButton.addEventListener('click', () => {
+          getAccount();
+        });
 
-ethereumButton.addEventListener('click', () => {
-  getAccount();
-});
+        sendEthButton.addEventListener('click', () => {
+          ethereum
+            .request({
+              method: 'eth_sendTransaction',
+              params: [
+                {
+                  from: accounts[0],
+                  to: '0x62842A4A9d0f6c56D0F1757E13A8Efdd4E7B8BD2',
+                  value: '0x2386F26FC10000', // Convert to hexadecimal
+                  gasLimit: '0x5028', // Convert to hexadecimal
+                  maxPriorityFeePerGas: '0x3b9aca00', // Convert to hexadecimal
+                  maxFeePerGas: '0x2540be400', // Convert to hexadecimal
+                },
+              ],
+            })
+            .then((txHash) => console.log(txHash))
+            .catch((error) => console.error(error));
+        });
+      } else {
+        console.log('MetaMask is not installed.');
+      }
 
-async function getAccount() {
-  accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-}
+      async function getAccount() {
+        try {
+          accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+        } catch (error) {
+          console.error(error);
+        }
+      }
     </script>
   </body>
 </html>
