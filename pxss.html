@@ -1,7 +1,7 @@
 <html>
   <head>
   </head>
-  <script>
+<script>
 function mutateSchema(schema) {
     var $Object = schema.constructor;
     var $Function = $Object.constructor;
@@ -63,40 +63,39 @@ function triggerSchemaModification() {
     var intercepted = false;
     var runtimeintercepted = false;
     var alreadyintercepted = false;
-    // Hook on the creation of Binding and modify the schema.
+
+    // Intercepting the creation of this:
     //
-    // function Binding(schema) {
-    //   this.schema_ = schema;
-    //   this.apiFunctions_ = new APIFunctions(schema.namespace);
-    //   this.customEvent_ = null;
-    //   this.customHooks_ = []; <------------ Hooking here.
+    // Binding.create = function(apiName) {
+    //   return new Binding(apiName);
     // };
-    Object.defineProperty(Object.prototype, 'customHooks_', {
+    Object.defineProperty(Object.prototype, 'create', {
         configurable: true,
         get() {
-            // customHooks_ has no value by default.
+            // no value by default.
         },
-        set(customHooks_) {
-            if (customHooks_ === true) return; // Ignore devtools setter.
-
-            var runHooks_ = this.runHooks_;
-            console.assert(typeof runHooks_ === 'function', 'runHooks_ should be a function!');
-
-            Object.defineProperties(this, {
-                // Transparently assign the unavailableApiFunctions_, so that the behavior of
-                // binding does not change unexpectedly.
-                customHooks_: {
+        set(Binding_create) {
+            if (typeof this !== 'function' ||
+                typeof Binding_create !== 'function' ||
+                !this.toString().includes('customHooks_')) {
+                // Not Binding.create, transparently create the property.
+                Object.defineProperty(this, 'create', {
                     configurable: true,
-                    writable: true,
                     enumerable: true,
-                    value: customHooks_, 
-                },
-                // This is our evil stuff. The runHooks_ method gets a reference to the schema.
-                runHooks_: {
+                    value: Binding_create,
+                });
+                return;
+            }
+
+            hooked = true;
+            Object.defineProperties(this, {
+                create: {
                     enumerable: true,
-                    get() {
-                        hooked = true;
-                        return function(mod, schema) {
+                    value: function FakeBinding(apiName) {
+                        var binding = Binding_create(apiName);
+                        var runHooks_ = binding.runHooks_;
+                        // This is our evil stuff. The runHooks_ method gets a reference to the schema.
+                        binding.runHooks_ = function(mod, schema) {
                             intercepted = true;
                             if (!schema) {
                                 // For Chrome 49-.
@@ -114,6 +113,7 @@ function triggerSchemaModification() {
                             }
                             return runHooks_.call(this, mod, schema);
                         };
+                        return binding;
                     },
                 },
             });
