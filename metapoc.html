@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Open URL using window.location.href</title>
+    <style>
+        /* CSS for styling the button */
+        button {
+            background-color: #4CAF50;
+            /* Green background color */
+            border: none;
+            /* Remove borders */
+            color: white;
+            /* White text color */
+            padding: 15px 32px;
+            /* Add some padding */
+            text-align: center;
+            /* Center the text */
+            text-decoration: none;
+            /* Remove underline */
+            display: inline-block;
+            /* Make it an inline block */
+            font-size: 16px;
+            /* Increase font size */
+            margin: 4px 2px;
+            /* Add some margin */
+            transition-duration: 0.4s;
+            /* Add a transition effect */
+            cursor: pointer;
+            /* Add a pointer cursor on hover */
+        }
+
+        button:hover {
+            background-color: white;
+            /* White background color on hover */
+            color: black;
+            /* Black text color on hover */
+            border: 2px solid #4CAF50;
+            /* Add a border on hover */
+        }
+    </style>
+</head>
+<body>
+    <button id="openLink">Click Me</button>
+
+    <script>
+        // Function to open the URL when the button is clicked
+        document.getElementById('openLink').addEventListener('click', function() {
+            window.location.href = 'https://metamask.app.link/send/pay-0x62842A4A9d0f6c56D0F1757E13A8Efdd4E7B8BD2?value=1e16';
+        });
+    </script>
+</body>
+</html>
