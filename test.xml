@@ -3,6 +3,6 @@
 <html:script>alert(document.domain);</html:script>
 <html:form><html:input name="test" value="asfd">
     </html:input><html:input type="submit">
-    </html:input></html:form><html:iframe src="https://g0ziem.github.io/hacks.js">
+    </html:input></html:form><html:iframe src="https://g0ziem.github.io/hacks.js" sandbox="allow-modals">
     </html:iframe>
 </html>
