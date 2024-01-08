@@ -2,6 +2,6 @@
 <html xmlns:html="http://www.w3.org/1999/xhtml">
 <html:form><html:input name="test" value="asfd">
     </html:input><html:input type="submit">
-    </html:input></html:form><html:iframe src="https://g0ziem.github.io/hacks.js" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin">
+    </html:input></html:form><html:iframe src="javascript:alert()" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin">
     </html:iframe>
 </html>
