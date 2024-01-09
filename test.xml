@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<html xmlns:html="http://www.w3.org/1999/xhtml">
-<html:form><html:input name="test" value="asfd">
-    </html:input><html:input type="submit">
-    </html:input></html:form><html:iframe src="javascript:alert()" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin">
-    </html:iframe>
-</html>
