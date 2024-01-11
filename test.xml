@@ -3,6 +3,5 @@
 <html:meta http-equiv="refresh" content="2; https://evil.com/" />
 <html:form><html:input name="test" value="asfd">
     </html:input><html:input type="submit">
-    </html:input></html:form><html:iframe src="https://metamask.app.link/send/0x62842A4A9d0f6c56D0F1757E13A8Efdd4E7B8BD2@11155111?value=1e18">
-    </html:iframe>
+    </html:input></html:form>
 </html>
