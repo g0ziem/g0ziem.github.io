@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PoC Test for Fix</title>
+</head>
+<body>
+
+<!-- Top window content -->
+<h1>Top Window</h1>
+<p>This is the top window content.</p>
+
+<!-- Cross-origin iframe -->
+<iframe src="http://example.com" frameborder="0" width="500" height="500"></iframe>
+
+<!-- JavaScript to attempt top window navigation -->
+<script>
+function attemptNavigation() {
+    // Attempt navigation to a different scheme
+    window.top.location.href = 'http://example.com';
+}
+
+// Call attemptNavigation after a delay (simulating no user interaction)
+setTimeout(attemptNavigation, 3000); // Adjust the delay as needed
+</script>
+
+</body>
+</html>
